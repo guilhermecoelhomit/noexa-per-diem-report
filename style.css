@@ -1,0 +1,362 @@
+:root { --accent: #8C2585; --accent-dark: #6d1c68; --accent-soft: #f6e9f5; --ink: #1f1f24; --muted: #6b6b76; --line: #e6e3ea; --bg: #efedf2; }
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; overflow: hidden; }
+body { display: flex; flex-direction: column; font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; font-size: 15px; color: var(--ink); background: var(--bg) url("background.webp") center / cover no-repeat fixed; }
+[hidden] { display: none !important; }
+
+.topbar { height: 52px; flex: none; display: flex; align-items: center; gap: 14px; padding: 0 24px; background: #fff; border-bottom: 1px solid var(--line); }
+.logo { height: 34px; width: auto; display: block; }
+.topbar-sep { width: 1px; height: 26px; background: var(--line); }
+h1 { color: var(--accent); font-size: 1.25rem; font-weight: 600; margin: 0; letter-spacing: .2px; }
+.banner { flex: none; background: #fdecec; border-bottom: 1px solid #e5a3a3; color: #8a1c1c; padding: 10px 24px; font-weight: 600; }
+
+#main-screen { flex: 1; min-height: 0; display: flex; }
+#preview-area { flex: 1; min-width: 0; overflow: hidden; padding: 28px; display: flex; align-items: center; justify-content: center; }
+#preview-scaler { overflow: hidden; background: #fff; border-radius: 3px; box-shadow: 0 2px 6px rgba(40,20,60,.12), 0 10px 30px rgba(40,20,60,.14); }
+#preview-clip { width: 794px; height: 620px; overflow: hidden; transform-origin: top left; }
+#preview-frame { width: 794px; height: 1123px; border: 0; display: block; background: #fff; }
+
+#side { flex: none; width: 500px; padding: 14px 18px 0; display: flex; flex-direction: column; gap: 10px; overflow-x: hidden; overflow-y: auto; background: #fff; border-left: 1px solid var(--line); }
+.card { background: #faf9fb; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.card h2 { margin: 0 0 8px; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.card-head h2 { margin-bottom: 0; }
+.row { display: flex; gap: 12px; }
+label { display: flex; flex-direction: column; gap: 4px; font-size: .8rem; color: var(--muted); flex: 1; }
+select { font: inherit; font-size: 1rem; color: var(--ink); padding: 8px 10px; width: 100%; border: 1px solid #d6d2dc; border-radius: 8px; background: #fff; }
+select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+button { font: inherit; font-weight: 600; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--accent); background: #fff; color: var(--accent); cursor: pointer; transition: background .12s; }
+button:hover:not(:disabled) { background: var(--accent-soft); }
+button.primary { background: var(--accent); color: #fff; }
+button.primary:hover:not(:disabled) { background: var(--accent-dark); }
+button.big { width: 100%; padding: 13px 16px; font-size: 1.08rem; border-radius: 10px; }
+button.link { border: 0; background: none; padding: 4px 6px; font-size: .85rem; border-radius: 6px; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+.actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.actions .primary { margin-left: auto; }
+
+.trips { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.total { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #d6d2dc; display: flex; justify-content: space-between; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.saved { display: flex; align-items: center; justify-content: space-between; }
+.sig-preview-box { height: 100px; border: 1px dashed var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; background: #fff repeating-conic-gradient(#f1eff4 0% 25%, #fff 0% 50%) 0 0 / 14px 14px; }
+.sig-preview-box img { max-width: 100%; max-height: 100%; display: block; }
+#signature-pad { width: 360px; height: 100px; max-width: 100%; border: 1px dashed var(--accent); border-radius: 10px; background: #fff linear-gradient(transparent 70px, #d9d5df 70px, #d9d5df 71px, transparent 71px); touch-action: none; cursor: crosshair; display: block; }
+
+.cta { margin-top: auto; position: sticky; bottom: 0; z-index: 2; background: #fff; padding-bottom: 16px; box-shadow: 0 -10px 8px -2px #fff; display: flex; flex-direction: column; gap: 10px; }
+.error { background: #fdecec; border: 1px solid #e5a3a3; color: #8a1c1c; padding: 10px 14px; border-radius: 10px; white-space: pre-line; font-size: .88rem; max-height: 9em; overflow: hidden; }
+.done-actions { display: flex; gap: 8px; }
+.done-actions button { flex: 1; padding: 9px 8px; }
+.cta .hint { margin: 6px 0 0; font-size: .78rem; color: var(--muted); }
+.ok { color: #1d6b34; font-weight: 600; }
+.confirm { background: #fff7e6; border: 1px solid #f0d28a; padding: 12px 14px; border-radius: 10px; }
+.confirm p, .cta p { margin: 0 0 8px; }
+code { user-select: all; background: #f0eef3; padding: 4px 7px; border-radius: 6px; word-break: break-all; font-size: .8rem; }
+
+/* per-trip project */
+.seg { display: inline-flex; }
+.seg button { padding: 1px 8px; font-size: .75rem; line-height: 1.3; border-radius: 0; border-color: #d6d2dc; color: var(--muted); font-weight: 600; }
+.seg button:first-child { border-radius: 6px 0 0 6px; }
+.seg button:last-child { border-radius: 0 6px 6px 0; margin-left: -1px; }
+.seg button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.seg button.on:hover:not(:disabled) { background: var(--accent-dark); }
+.fld { font: inherit; font-size: .85rem; color: var(--ink); height: 30px; padding: 3px 8px; width: 100%; min-width: 0; border: 1px solid #d6d2dc; border-radius: 7px; background: #fff; }
+.fld:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.fld.invalid { border-color: #c0392b; }
+.hint-bad { color: #8a1c1c; font-size: .75rem; }
+
+/* ---- home page and placeholder pages ---- */
+.home { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.home-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 40px 48px; text-align: center; box-shadow: 0 10px 30px rgba(40,20,60,.10); }
+.home-logo { height: 48px; width: auto; margin-bottom: 14px; }
+.home-actions { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; min-width: 300px; }
+.home-btn { display: block; padding: 18px 28px; border-radius: 12px; background: var(--accent); color: #fff; font-size: 1.1rem; font-weight: 600; text-decoration: none; }
+.home-btn:hover, .home-btn:focus-visible { background: var(--accent-dark); }
+.home-link { margin-left: auto; color: var(--accent); font-weight: 600; text-decoration: none; }
+.home-link:hover { text-decoration: underline; }
+.placeholder { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 1.1rem; }
+
+/* ---- header actions and profile dialog ---- */
+.topbar .link { border: 1px solid var(--accent); padding: 4px 12px; }
+.profile-dialog { border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; width: 360px; max-width: calc(100vw - 32px); box-shadow: 0 10px 40px rgba(40,20,60,.28); color: var(--ink); }
+.profile-dialog::backdrop { background: rgba(31,31,36,.45); }
+.profile-dialog h2 { margin: 0 0 12px; font-size: 1.1rem; color: var(--accent); }
+.profile-dialog label { margin-bottom: 10px; }
+.profile-dialog .fld { height: 36px; font-size: .95rem; }
+.profile-dialog .error { margin-top: 4px; }
+
+/* ---- Expenses Report: entry row and compact list ---- */
+.card.compact { padding: 10px 12px; }
+.count { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.entry { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; align-items: end; }
+.entry label { font-size: .72rem; gap: 2px; }
+.entry .e-desc, .entry .e-proj, .entry .e-actions { grid-column: 1 / 3; }
+.entry .fld { height: 30px; }
+.e-proj { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .75rem; color: var(--muted); }
+.e-proj .fld { flex: 1 1 120px; width: auto; }
+.e-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; min-height: 30px; }
+.e-actions .hint-bad { flex: 1; min-width: 0; }
+button.check { padding: 3px 16px; font-size: 1.05rem; line-height: 1.2; }
+.elist { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; max-height: 188px; overflow-y: auto; }
+.elist li { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 3px 6px 3px 8px; display: grid; grid-template-columns: 1.4rem 4.6rem 1fr auto auto auto; column-gap: 6px; align-items: center; font-size: .8rem; }
+.elist li.editing { border-color: var(--accent); background: var(--accent-soft); }
+.elist .x-num { font-weight: 700; color: var(--accent); }
+.elist .x-date, .elist .x-amt { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.elist .x-desc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.elist .x-amt { font-weight: 600; text-align: right; }
+.elist button.link { padding: 1px 5px; font-size: .75rem; }
+.card.compact .total { margin-top: 6px; padding-top: 6px; }
+
+/* ---- Attach proof row and the proofs of the entry ---- */
+.entry .e-proof { grid-column: 1 / 3; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.e-proof button { padding: 4px 12px; font-size: .85rem; flex: none; }
+.proof-status { font-size: .75rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.proof-status.ok { color: #1d6b34; }
+.proof-status.bad { color: #8a1c1c; }
+.plist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; max-height: 66px; overflow-y: auto; }
+.plist:empty { display: none; }
+.plist li { display: flex; align-items: center; gap: 8px; font-size: .8rem; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px 1px 8px; }
+.plist .p-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plist .p-size { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.plist button.link { padding: 1px 5px; font-size: .75rem; }
+.proof-errors { color: #8a1c1c; font-size: .75rem; max-height: 48px; overflow-y: auto; }
+.proof-errors:empty { display: none; }
+.elist .x-sub { grid-column: 2 / 7; color: var(--muted); font-size: .72rem; display: flex; gap: 0; min-width: 0; white-space: nowrap; }
+.elist .x-sub > span { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.elist .x-sub > span + span::before { content: " \00b7 "; white-space: pre; }
+.elist .x-loc { flex: 0 1 auto; color: var(--ink, inherit); font-weight: 600; }
+.elist .x-files { flex: none; }
+.elist .x-err { grid-column: 1 / 7; color: #8a1c1c; font-size: .72rem; }
+
+/* ---- Expenses page: compact layout (fits 1280x720 in the base state) ---- */
+.topbar .period { display: flex; gap: 10px; margin-left: 20px; }
+.topbar .period label { flex-direction: row; align-items: center; gap: 6px; flex: none; }
+.topbar .period select { width: auto; padding: 3px 8px; font-size: .9rem; }
+.card-head .head-hint { flex: 1; min-width: 0; margin: 0 8px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.entry .fld { padding: 3px 5px; }
+.e-spacer { flex: 1; }
+.e-proj .fld { flex: 1 1 90px; }
+#side { gap: 8px; }
+#side .card h2 { margin-bottom: 4px; }
+.card.compact .card-head { margin-bottom: 4px; }
+.cta { padding-bottom: 12px; }
+
+/* ---- Expenses page: whole-page scrolling preview, compact signature ---- */
+body.expenses #preview-frame { height: 400px; }
+body.expenses .cta .hint, body.perdiem .cta .hint { margin: 4px 0 0; }
+
+/* long lists share the free height of the side panel instead of scrolling the whole panel */
+body.expenses #side > .card { flex: 0 1 auto; min-height: 0; }
+body.expenses #expenses-card { display: flex; flex-direction: column; }
+body.expenses .elist { flex: 1 1 auto; min-height: 46px; max-height: none; }
+body.expenses #side > .cta, body.expenses #side > .error { flex: none; }
+body.expenses #side > .card { flex: none; }
+body.expenses #side > #expenses-card { flex: 0 1 auto; }
+
+
+/* ---- Per Diem trips: one card per trip (number, location, km, value, remove / dates / project / hint) ---- */
+.trips li { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; display: grid; grid-template-columns: 1.2rem 1fr 92px auto auto; column-gap: 8px; row-gap: 4px; align-items: center; }
+.trips .t-rm:hover:not(:disabled) { color: #8a1c1c; }
+.trips .t-dates .fld { width: 132px; flex: none; padding: 3px 5px; }
+.trips .t-days { margin-left: auto; font-variant-numeric: tabular-nums; }
+.trips .t-projrow .fld { flex: 1 1 120px; min-width: 0; width: auto; }
+.trips .t-hint[hidden] { display: none; }
+#trips-card { display: flex; flex-direction: column; }
+body.perdiem #side > .card { flex: none; }
+body.perdiem #side > #trips-card { flex: 0 1 auto; min-height: 0; }
+body.perdiem .trips { flex: 1 1 auto; min-height: 110px; overflow-y: auto; }
+
+/* ---- Signature card (both pages): Sign Document beside the box, Clear / Upload / Cancel below ---- */
+.sign-top { display: flex; gap: 10px; align-items: stretch; }
+.sign-top #btn-sign { flex: 1; min-width: 0; white-space: normal; }
+#signature-pad { width: 320px; height: 89px; flex: none; max-width: 100%; }
+#sign-draw .actions { margin-top: 6px; flex-wrap: nowrap; }
+#sign-draw .actions button { padding: 5px 12px; font-size: .85rem; }
+.sig-preview-box { height: 89px; }
+
+/* ---- Side panel sizing (intermediate): readable text and 34 px controls, nothing clipped ---- */
+#side { width: 540px; padding: 12px 20px 0; gap: 9px; }
+#side .card, #side .card.compact { padding: 12px 16px; border-radius: 13px; }
+#side .card h2 { font-size: .75rem; margin-bottom: 8px; }
+#side .card.compact .card-head { margin-bottom: 6px; }
+#side label { font-size: .82rem; gap: 4px; }
+#side .fld, #side select { font-size: .92rem; height: 34px; padding: 4px 9px; }
+#side select { height: 36px; }
+#side button { font-size: .92rem; padding: 7px 16px; }
+#side button.link { font-size: .9rem; padding: 5px 8px; }
+#side .card-head .count { font-size: .88rem; }
+#side .seg button { padding: 3px 14px; font-size: .88rem; line-height: 1.4; }
+#side .total { font-size: 1rem; margin-top: 8px; padding-top: 8px; }
+#side .hint-bad { font-size: .8rem; }
+#side button.check { padding: 4px 18px; font-size: 1.1rem; }
+#side .cta button.big { padding: 13px 16px; font-size: 1.1rem; }
+#side .cta .hint, #side .cta p { font-size: .84rem; }
+
+/* Per Diem trip card: Location on its own wide row, then Km and value, dates, project, hint */
+#side .trips { gap: 8px; margin-top: 8px; }
+#side .trips li { padding: 8px 12px; grid-template-columns: 1.7rem 1fr 92px auto auto; column-gap: 9px; row-gap: 6px; }
+#side .trips .t-dates .fld { flex: 1 1 0; width: auto; min-width: 0; padding: 4px 5px; }
+.trips .t-days { font-size: .88rem; }
+.trips .t-projrow .fld { height: 32px; }
+
+/* Signature: Sign Document beside the box */
+#signature-pad { width: 290px; height: 81px; }
+.sig-preview-box { height: 81px; }
+#side #sign-draw .actions button { padding: 6px 13px; font-size: .9rem; }
+#side .sign-top #btn-sign { font-size: .95rem; }
+
+/* Expenses lists and entry rows share the controls but keep their compact rows */
+#side .entry { gap: 7px 9px; }
+#side .elist li { font-size: .88rem; padding: 4px 8px; }
+#side .elist button.link { font-size: .82rem; padding: 3px 7px; }
+#side .e-proof button { font-size: .9rem; padding: 6px 12px; }
+#side .proof-status { font-size: .82rem; }
+
+/* Tall screens (1080p and up): use the free height for slightly roomier controls */
+@media (min-height: 900px) {
+  #side { gap: 13px; padding-top: 16px; }
+  #side .card, #side .card.compact { padding: 16px 18px; }
+  #side .fld, #side select { height: 40px; font-size: 1rem; }
+  #side select { height: 42px; }
+  #side button { font-size: 1rem; padding: 9px 18px; }
+  #side .trips li { padding: 12px 14px; row-gap: 8px; }
+  #side .trips .t-projrow .fld { height: 36px; }
+  #side .seg button { padding: 4px 16px; }
+  #signature-pad { width: 310px; height: 86px; }
+  .sig-preview-box { height: 86px; }
+  #side .cta button.big { padding: 16px 16px; font-size: 1.2rem; }
+}
+
+/* Expenses has two entry cards plus the signature: on short screens keep them compact so 20 + 20 rows still fit */
+@media (max-height: 899px) {
+  body.expenses #side { gap: 6px; padding-top: 6px; }
+  body.expenses #side .card, body.expenses #side .card.compact { padding: 8px 14px; }
+  body.expenses .cta { padding-bottom: 8px; }
+  body.expenses #side .card h2 { margin-bottom: 4px; }
+  body.expenses #side .fld { height: 34px; padding: 3px 8px; font-size: .95rem; }
+  body.expenses #side label { font-size: .8rem; gap: 3px; }
+  body.expenses #side .entry { gap: 6px 10px; }
+  body.expenses #side button { padding: 6px 14px; font-size: .95rem; }
+  body.expenses #side .seg button { padding: 3px 14px; }
+  body.expenses #side button.check { padding: 3px 16px; }
+  body.expenses #side .total { margin-top: 6px; padding-top: 6px; font-size: 1rem; }
+  body.expenses #side .elist { margin-top: 6px; }
+  body.expenses #side .elist li { padding: 3px 8px; font-size: .88rem; }
+  body.expenses .elist { min-height: 36px; }
+  body.expenses #signature-pad { width: 270px; height: 75px; }
+  body.expenses .sig-preview-box { height: 75px; }
+  body.expenses #side #sign-draw .actions button { padding: 5px 12px; }
+  body.expenses #side .cta button.big { padding: 12px 16px; }
+}
+
+/* The expenses card takes the height that is left (it shrinks, never grows past its content) and its list
+   scrolls inside it: more proofs in the entry row or a taller signature box just make the list shorter. */
+body.expenses #side > #expenses-card { flex: 0 1 auto; }
+body.expenses .elist { flex: 1 1 auto; min-height: 40px; max-height: none; height: auto; }
+
+/* Draft note under the preview sheet */
+#preview-area { position: relative; }
+.preview-note { position: absolute; left: 0; right: 0; bottom: 8px; margin: 0; text-align: center; font-size: .82rem; color: var(--muted); }
+
+/* ---- Per Diem trip card (final layout): number | Location | Km | = value | remove / dates / project / hint ---- */
+.trips .t-num { grid-column: 1; grid-row: 1; font-size: 1.1rem; text-align: center; }
+.trips .t-loc { grid-column: 2; grid-row: 1; }
+.trips .t-km { grid-column: 3; grid-row: 1; text-align: right; }
+.trips .t-val { grid-column: 4; grid-row: 1; font-size: .92rem; min-width: 5.4rem; text-align: left; }
+.trips .t-rm { grid-column: 5; grid-row: 1; font-size: 1.1rem; padding: 3px 8px; }
+.trips .t-dates { grid-column: 2 / 6; grid-row: 2; font-size: .9rem; gap: 7px; }
+.trips .t-projrow { grid-column: 2 / 6; grid-row: 3; font-size: .88rem; gap: 9px; }
+.trips .t-projrow .fld { flex: 1 1 140px; min-width: 0; width: auto; }
+.trips .t-hint { grid-column: 2 / 6; grid-row: 4; font-size: .8rem; }
+
+/* ---- Expenses entry rows: Date wider, Description on its own row, project row with a roomy name field ---- */
+#side .entry.xp { grid-template-columns: 176px 1fr; }
+.entry.xp .e-loc { grid-column: 1 / 3; grid-row: 1; }
+.entry.xp .e-date { grid-column: 1; grid-row: 2; }
+.entry.xp .e-amount { grid-column: 2; grid-row: 2; }
+.entry.xp .e-desc { grid-column: 1 / 3; grid-row: 3; }
+.entry.xp .e-proj { grid-column: 1 / 3; grid-row: 4; }
+.entry.xp .e-proof { grid-column: 1 / 3; grid-row: 5; }
+.entry.xp .plist, .entry.xp .proof-errors { grid-column: 1 / 3; }
+.entry.xp .e-proof .proof-status { flex: 1; }
+.e-proj .fld:not([hidden]) ~ .e-spacer { display: none; }
+#side .e-proj .fld { flex: 1 1 140px; width: auto; min-width: 0; }
+
+/* The screen preview is a fluid card, not a sheet: only a long document scrolls */
+#preview-area.scroll { overflow-y: auto; align-items: flex-start; }
+#side { width: 560px; }
+#side .trips li { grid-template-columns: 1.4rem 1fr 88px auto auto; }
+.trips .t-projrow > span:first-child, .trips .t-projrow .seg, .trips .t-days, .trips .t-dates > span { flex: none; white-space: nowrap; }
+.trips .t-days { margin-left: auto; }
+
+/* Expenses entry rows: the label text becomes the placeholder (still the accessible name), saving a line per row */
+#side .entry label { font-size: 0; gap: 0; }
+#side .elist:empty { display: none; }
+body.expenses #side .entry label { font-size: 0; gap: 0; }
+
+/* Expenses on short screens: squeeze the stack (period + two entry cards + signature) so it fits as far as possible */
+@media (max-height: 899px) {
+  body.expenses #side { gap: 5px; padding-top: 5px; }
+  body.expenses #side .card, body.expenses #side .card.compact { padding: 5px 12px 6px; }
+  body.expenses #side .card h2 { margin-bottom: 2px; font-size: .7rem; }
+  body.expenses #side .card.compact .card-head, body.expenses #side .card-head { margin-bottom: 3px; }
+  body.expenses #side .entry { gap: 4px 8px; }
+  body.expenses #side .fld, body.expenses #side select { height: 31px; padding: 2px 8px; }
+  body.expenses #side .row label { font-size: .75rem; gap: 2px; }
+  body.expenses #side .seg button { padding: 2px 12px; }
+  body.expenses #side button { padding: 5px 12px; }
+  body.expenses #side button.check { padding: 2px 14px; }
+  body.expenses #side .total { margin-top: 4px; padding-top: 4px; font-size: .95rem; }
+  body.expenses #side .elist { margin-top: 4px; }
+  body.expenses #signature-pad { width: 236px; height: 66px; }
+  body.expenses .sig-preview-box { height: 66px; }
+  body.expenses #side #sign-draw .actions button { padding: 3px 12px; }
+  body.expenses #side #sign-draw .actions { margin-top: 4px; }
+  body.expenses #side .cta { padding-bottom: 6px; }
+  body.expenses #side .cta button.big { padding: 10px 16px; }
+}
+
+/* ======== Final polish: trip card hierarchy, signature card, shared spacing (8 / 12 px rhythm) ======== */
+#side .trips li { padding: 12px 14px; column-gap: 12px; row-gap: 10px; align-items: center; border-radius: 12px; box-shadow: 0 1px 0 rgba(40,20,60,.04); grid-template-columns: 26px 1fr 88px auto auto; }
+.trips .t-num { grid-column: 1; grid-row: 1; width: 24px; height: 24px; line-height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: .8rem; font-weight: 700; text-align: center; }
+.trips .t-rm { grid-column: 5; grid-row: 1; align-self: start; justify-self: end; margin: -4px -6px 0 0; }
+.trips .t-dates { grid-column: 2 / 6; grid-row: 2; gap: 10px; }
+.trips .t-dates > span:not(.t-days) { margin: 0 2px; color: var(--muted); }
+.trips .t-days { margin-left: auto; padding: 2px 9px; border-radius: 999px; background: #f1eff4; color: var(--muted); font-size: .78rem; }
+.trips .t-days:empty { display: none; }
+.trips .t-projrow { grid-column: 2 / 6; grid-row: 3; gap: 12px; color: var(--muted); font-size: .85rem; }
+.trips .t-projname { grid-column: 2 / 6; grid-row: 4; width: 100%; }
+.trips .t-projname[hidden] { display: none; }
+.trips .t-hint { grid-column: 2 / 6; grid-row: 5; font-size: .78rem; color: #b3261e; opacity: .9; margin-top: -2px; }
+
+/* Signature: a wide, short box with a baseline and a "Sign here" hint; Sign Document to its right; small actions below */
+.sign-top { display: flex; gap: 12px; align-items: flex-end; }
+.sign-box { position: relative; flex: 1; min-width: 0; height: 84px; border: 1px dashed var(--accent); border-radius: 12px; background: #fff; overflow: hidden; }
+.sign-box::before { content: "Sign here"; position: absolute; left: 14px; top: 9px; color: #b9b4c3; font-size: .78rem; letter-spacing: .02em; pointer-events: none; }
+.sign-box.inked::before { display: none; }
+#side .sign-box #signature-pad { display: block; width: 100%; height: 100%; max-width: none; border: 0; border-radius: 0; cursor: crosshair; background: linear-gradient(transparent calc(100% - 24px), #d9d5df calc(100% - 24px), #d9d5df calc(100% - 23px), transparent calc(100% - 23px)); }
+#side .sign-top #btn-sign { flex: none; min-width: 0; white-space: nowrap; padding: 8px 18px; }
+#side #sign-draw .actions { justify-content: flex-start; gap: 8px; margin-top: 8px; }
+#side #sign-draw .actions button { height: 30px; padding: 0 12px; font-size: .85rem; }
+.sig-preview-box { height: 84px; border-radius: 12px; }
+@media (max-height: 899px) {
+  body.expenses .sign-box, body.expenses .sig-preview-box { height: 66px; }
+  body.expenses #side #sign-draw .actions button { height: 26px; }
+}
+@media (min-height: 900px) {
+  .sign-box, .sig-preview-box { height: 96px; }
+}
+.trips .t-dates, .trips .t-projrow { display: flex; align-items: center; }
+.trips .t-projrow > span:first-child { margin-right: 4px; }
+
+/* Consistency pass: on short screens both pages use the same type scale and control heights (only paddings differ) */
+@media (max-height: 899px) {
+  body.expenses #side .card h2, body.perdiem #side .card h2 { font-size: .72rem; }
+  body.expenses #side .row label, body.perdiem #side .row label { font-size: .78rem; gap: 3px; }
+  body.expenses #side .fld, body.expenses #side select, body.perdiem #side .fld, body.perdiem #side select { height: 32px; padding: 3px 9px; font-size: .92rem; }
+  body.expenses #side button, body.perdiem #side button { font-size: .9rem; }
+  body.expenses #side .seg button, body.perdiem #side .seg button { padding: 2px 13px; font-size: .88rem; }
+  body.expenses #side .total, body.perdiem #side .total { font-size: .95rem; }
+  body.expenses #side .cta button.big, body.perdiem #side .cta button.big { font-size: 1.1rem; }
+}
